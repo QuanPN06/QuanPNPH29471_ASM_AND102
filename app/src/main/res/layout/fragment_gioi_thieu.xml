@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Giới thiệu"
+        android:textSize="40dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_marginVertical="30dp"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/logo"
+        android:layout_marginVertical="10dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Android 2- MOB102 "
+        android:textSize="30dp"
+        android:gravity="center"
+        android:layout_marginVertical="10dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="MD18403"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:layout_marginVertical="10dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Phương Ngọc Quân"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:layout_marginVertical="10dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PH29471"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:layout_marginVertical="10dp"
+        />
+
+</LinearLayout>
