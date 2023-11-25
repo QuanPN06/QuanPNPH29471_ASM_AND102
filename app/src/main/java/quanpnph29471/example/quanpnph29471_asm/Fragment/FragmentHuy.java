@@ -1,7 +1,5 @@
 package quanpnph29471.example.quanpnph29471_asm.Fragment;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 import quanpnph29471.example.quanpnph29471_asm.Adapter.TaskAdapter;
+import quanpnph29471.example.quanpnph29471_asm.Adapter.TaskCancelAdapter;
 import quanpnph29471.example.quanpnph29471_asm.ClickDelItem;
 import quanpnph29471.example.quanpnph29471_asm.ClickUpdateItem;
 import quanpnph29471.example.quanpnph29471_asm.DAO.TaskDAO;
@@ -33,21 +31,18 @@ import quanpnph29471.example.quanpnph29471_asm.MainActivity;
 import quanpnph29471.example.quanpnph29471_asm.Model.Task;
 import quanpnph29471.example.quanpnph29471_asm.R;
 
-public class FragmentQLCongViec extends Fragment {
+public class FragmentHuy extends Fragment {
     RecyclerView rc ;
-    TaskAdapter taskAdapter;
+    TaskCancelAdapter taskAdapter;
     TaskDAO taskDAO;
     ArrayList<Task> list = new ArrayList<>();
-    
-    FloatingActionButton float_btn;
-
     ImageButton btn_search;
     EditText ed_search;
     
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_quan_ly_cv,container,false);
+        return inflater.inflate(R.layout.fragment_huy_cv,container,false);
     }
 
     @Override
@@ -55,14 +50,13 @@ public class FragmentQLCongViec extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         rc = view.findViewById(R.id.recycler_view);
-        float_btn = view.findViewById(R.id.floating_button);
         ed_search = view.findViewById(R.id.ed_fragment_ql_search);
         btn_search = view.findViewById(R.id.btn_fragment_ql_tapSearch);
         
         taskDAO = new TaskDAO(getContext());
-        list =taskDAO.getList();
+        list =taskDAO.getListCancel();
 
-        taskAdapter = new TaskAdapter(list, new ClickDelItem() {
+        taskAdapter = new TaskCancelAdapter(list, new ClickDelItem() {
             @Override
             public void onClickDel(Task obj) {
                 showDialogDelTask(obj);
@@ -75,12 +69,6 @@ public class FragmentQLCongViec extends Fragment {
         });
 
         rc.setAdapter(taskAdapter);
-        float_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((MainActivity) getActivity()).switchFragThem();
-            }
-        });
 
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +80,7 @@ public class FragmentQLCongViec extends Fragment {
                     TaskDAO taskDAO1 = new TaskDAO(getContext());
                     list = new ArrayList<>();
                     list = taskDAO1.Search(searchName);
-                    taskAdapter = new TaskAdapter(list, new ClickDelItem() {
+                    taskAdapter = new TaskCancelAdapter(list, new ClickDelItem() {
                         @Override
                         public void onClickDel(Task obj) {
                             showDialogDelTask(obj);
@@ -134,56 +122,23 @@ public class FragmentQLCongViec extends Fragment {
         dialog.show();
     }
 
-//    private void showDialogDelTask(Task obj) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//
-//        LayoutInflater inflater = getLayoutInflater();
-//        View v = inflater.inflate(R.layout.layout_dialog_del_task,null);
-//        builder.setView(v);
-//        builder.setCancelable(false);
-//
-//        AlertDialog dialog =builder.create();//khởi tạo dialog
-//        //tương tác view
-//        TextView tv_name = v.findViewById(R.id.tv_del_name);
-//        Button btn_del_dialog = v.findViewById(R.id.btn_del_dialog);
-//        Button btn_cancel=v.findViewById(R.id.btn_cancel_del_dialog);
-//        tv_name.setText("Ban chac chan muon xoa: "+obj.getName());
-//        btn_del_dialog.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                TaskDAO dao1 = new TaskDAO(getContext());
-//                obj.setStatus(-1);
-//                long check = dao1.update(obj);
-//                if(check>0){
-//                    list.clear();
-//                    list.addAll(dao1.getList());
-//                    taskAdapter.notifyDataSetChanged();
-//                    Toast.makeText(getContext(), "Chuyen vao thung rac", Toast.LENGTH_SHORT).show();
-//                    dialog.dismiss();//tắt dialog
-//                }else {
-//                    Toast.makeText(getContext(), "Lỗi xoa", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//        btn_cancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dialog.dismiss();
-//            }
-//        });
-//        dialog.show();
-//    }
-
     private void showDialogDelTask(Task obj) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setTitle("Xác nhận !!!");
+        LayoutInflater inflater = getLayoutInflater();
+        View v = inflater.inflate(R.layout.layout_dialog_del_task,null);
+        builder.setView(v);
+        builder.setCancelable(false);
 
-        builder.setMessage("Chuyển " + obj.getName().toUpperCase()+" vào thùng rác");
-
-        builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
+        AlertDialog dialog =builder.create();//khởi tạo dialog
+        //tương tác view
+        TextView tv_name = v.findViewById(R.id.tv_del_name);
+        Button btn_del_dialog = v.findViewById(R.id.btn_del_dialog);
+        Button btn_cancel=v.findViewById(R.id.btn_cancel_del_dialog);
+        tv_name.setText("Ban chac chan muon xoa: "+obj.getName());
+        btn_del_dialog.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(View view) {
                 TaskDAO dao1 = new TaskDAO(getContext());
                 obj.setStatus(-1);
                 long check = dao1.update(obj);
@@ -191,23 +146,20 @@ public class FragmentQLCongViec extends Fragment {
                     list.clear();
                     list.addAll(dao1.getList());
                     taskAdapter.notifyDataSetChanged();
-                    Toast.makeText(getContext(), "Đã chuyển vào thùng rác ", Toast.LENGTH_SHORT).show();
-                    dialogInterface.dismiss();
+                    Toast.makeText(getContext(), "Chuyen vao thung rac", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();//tắt dialog
                 }else {
                     Toast.makeText(getContext(), "Lỗi xoa", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
+            public void onClick(View view) {
+                dialog.dismiss();
             }
         });
-        AlertDialog alertDialogdialog =builder.create();
-        alertDialogdialog.show();
-
+        dialog.show();
     }
 }
 

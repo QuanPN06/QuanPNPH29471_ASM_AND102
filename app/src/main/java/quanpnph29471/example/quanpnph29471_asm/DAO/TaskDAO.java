@@ -19,10 +19,6 @@ public class TaskDAO {
         db = dbHelper.getWritableDatabase();
     }
 
-    public ArrayList<Task> getList(){
-        String sql = "SELECT * FROM tb_task";
-        return getData(sql);
-    }
     public ArrayList<Task> getData (String sql,String...SelectAvgs){
         ArrayList<Task> list = new ArrayList<>();
         Cursor c = db.rawQuery(sql,SelectAvgs);
@@ -42,6 +38,11 @@ public class TaskDAO {
             }while (c.moveToNext());
         }
         return list ;
+    }
+
+    public ArrayList<Task> getList(){
+        String sql = "SELECT * FROM tb_task WHERE status <> -1";
+        return getData(sql);
     }
 
     public long insert (Task obj){
@@ -70,6 +71,11 @@ public class TaskDAO {
 
     public ArrayList<Task> Search(String name){
         String sql = "SELECT * FROM tb_task WHERE name LIKE '%"+ name +"%' ";
+        return getData(sql);
+    }
+
+    public ArrayList<Task> getListCancel(){
+        String sql = "SELECT * FROM tb_task WHERE status LIKE -1";
         return getData(sql);
     }
 }

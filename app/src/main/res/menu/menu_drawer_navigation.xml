@@ -13,6 +13,11 @@
         android:title="Thêm công việc"/>
 
     <item
+        android:id="@+id/task_canceled"
+        android:icon="@drawable/baseline_delete_sweep_24"
+        android:title="Thùng rác"/>
+
+    <item
         android:id="@+id/introduce"
         android:icon="@drawable/baseline_person_24"
         android:title="Giới thiệu"/>

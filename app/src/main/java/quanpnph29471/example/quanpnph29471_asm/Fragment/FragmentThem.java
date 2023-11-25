@@ -24,9 +24,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 
 import quanpnph29471.example.quanpnph29471_asm.Adapter.TaskAdapter;
-import quanpnph29471.example.quanpnph29471_asm.ClickItem;
 import quanpnph29471.example.quanpnph29471_asm.DAO.TaskDAO;
 import quanpnph29471.example.quanpnph29471_asm.LoginActivity;
+import quanpnph29471.example.quanpnph29471_asm.MainActivity;
 import quanpnph29471.example.quanpnph29471_asm.Model.Task;
 import quanpnph29471.example.quanpnph29471_asm.R;
 import quanpnph29471.example.quanpnph29471_asm.RegisterActivity;
@@ -87,6 +87,7 @@ public class FragmentThem extends Fragment {
                 long check = taskDAO.insert(task);
                 if(check>0){
                     Toast.makeText(getContext(), "Thêm hoạt động thành công", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getContext(), MainActivity.class));
                 }else {
                     Toast.makeText(getContext(), "Thêm thất bại", Toast.LENGTH_SHORT).show();
                 }

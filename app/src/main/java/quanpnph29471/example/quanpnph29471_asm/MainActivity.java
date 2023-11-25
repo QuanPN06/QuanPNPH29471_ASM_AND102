@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
 
 import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentGioiThieu;
+import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentHuy;
 import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentQLCongViec;
 import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentThem;
 
@@ -61,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
                 }else if(item.getItemId() ==R.id.add_task){
                     toolbar.setTitle("Thêm công việc mới");
                     fragment = new FragmentThem();
+                }else if(item.getItemId() ==R.id.task_canceled){
+                    toolbar.setTitle("Công việc bị hủy");
+                    fragment = new FragmentHuy();
                 }
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -70,7 +74,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
+    }
+    public void switchFragThem() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container_01, new FragmentThem())
+                .addToBackStack(null)  // Nếu bạn muốn thêm vào Back Stack để có thể quay lại FragmentA
+                .commit();
     }
 }
