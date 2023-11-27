@@ -78,4 +78,9 @@ public class TaskDAO {
         String sql = "SELECT * FROM tb_task WHERE status LIKE -1";
         return getData(sql);
     }
+
+    public ArrayList<Task> SearchCancelTask(String name){
+        String sql = "SELECT * FROM tb_task WHERE name LIKE '%"+ name +"%' AND status LIKE -1";
+        return getData(sql);
+    }
 }

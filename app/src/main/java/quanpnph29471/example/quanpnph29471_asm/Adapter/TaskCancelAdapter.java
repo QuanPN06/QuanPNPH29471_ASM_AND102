@@ -1,6 +1,7 @@
 package quanpnph29471.example.quanpnph29471_asm.Adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 import quanpnph29471.example.quanpnph29471_asm.ClickDelItem;
 import quanpnph29471.example.quanpnph29471_asm.ClickUpdateItem;
+import quanpnph29471.example.quanpnph29471_asm.DAO.TaskDAO;
 import quanpnph29471.example.quanpnph29471_asm.Model.Task;
 import quanpnph29471.example.quanpnph29471_asm.R;
 
@@ -22,13 +25,9 @@ public class TaskCancelAdapter extends RecyclerView.Adapter<TaskCancelAdapter.Ta
     ArrayList<Task> list;
     Context context;
 
-    ClickDelItem clickDelItem;
-    ClickUpdateItem clickUpdateItem;
-
-    public TaskCancelAdapter(ArrayList<Task> list, ClickDelItem clickDelItem, ClickUpdateItem clickUpdateItem) {
+    public TaskCancelAdapter(ArrayList<Task> list, Context context) {
         this.list = list;
-        this.clickDelItem = clickDelItem;
-        this.clickUpdateItem = clickUpdateItem;
+        this.context = context;
     }
 
     @NonNull
@@ -50,19 +49,20 @@ public class TaskCancelAdapter extends RecyclerView.Adapter<TaskCancelAdapter.Ta
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                clickDelItem.onClickDel(obj);
+                showDialogMoveTask(obj);
                 return true;
             }
         });
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+        holder.img_del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), obj.getName()+"", Toast.LENGTH_SHORT).show();
-                clickUpdateItem.onClickUpdate(obj);
+                showDialogDelTask(obj);
             }
         });
-
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -70,7 +70,7 @@ public class TaskCancelAdapter extends RecyclerView.Adapter<TaskCancelAdapter.Ta
     }
 
     class TaskViewHolder extends RecyclerView.ViewHolder{
-        ImageView img;
+        ImageView img,img_del;
         TextView tv_name;
         TextView tv_content;
         TextView tv_status;
@@ -85,6 +85,74 @@ public class TaskCancelAdapter extends RecyclerView.Adapter<TaskCancelAdapter.Ta
             tv_status = itemView.findViewById(R.id.row_tv_status);
             tv_start = itemView.findViewById(R.id.row_tv_start);
             tv_end = itemView.findViewById(R.id.row_tv_end);
+            img_del = itemView.findViewById(R.id.img_delete);
         }
+    }
+
+    private void showDialogMoveTask(Task obj) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        builder.setTitle("Xác nhận !!!");
+
+        builder.setMessage("Tiếp tục thực hiện \"" + obj.getName() + "\"");
+
+        builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                TaskDAO dao1 = new TaskDAO(context);
+                obj.setStatus(1);
+                long check = dao1.update(obj);
+                if (check > 0) {
+                    list.clear();
+                    list.addAll(dao1.getListCancel());
+                    notifyDataSetChanged();
+                    Toast.makeText(context, "Chuyển thành công ", Toast.LENGTH_SHORT).show();
+                    dialogInterface.dismiss();
+                } else {
+                    Toast.makeText(context, "Lỗi chuyển", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialogdialog = builder.create();
+        alertDialogdialog.show();
+    }
+
+    private void showDialogDelTask(Task obj) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        builder.setTitle("Xác nhận !!!");
+
+        builder.setMessage("Bạn muốn xóa  \"" + obj.getName() + "\"");
+
+        builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                TaskDAO dao1 = new TaskDAO(context);
+                long check = dao1.delete(obj);
+                if (check > 0) {
+                    list.clear();
+                    list.addAll(dao1.getListCancel());
+                    notifyDataSetChanged();
+                    Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                    dialogInterface.dismiss();
+                } else {
+                    Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialogdialog = builder.create();
+        alertDialogdialog.show();
     }
 }

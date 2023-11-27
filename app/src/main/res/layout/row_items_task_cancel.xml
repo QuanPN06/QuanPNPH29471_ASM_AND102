@@ -16,7 +16,8 @@
         android:layout_gravity="center_vertical"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginVertical="10dp">
@@ -64,5 +65,16 @@
             android:paddingLeft="10dp"
             android:layout_marginHorizontal="5dp"/>
     </LinearLayout>
+    <TextView
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:background="@color/black"/>
+
+    <ImageView
+        android:id="@+id/img_delete"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/baseline_delete_sweep_24"
+        android:paddingHorizontal="5dp"/>
 
 </LinearLayout>

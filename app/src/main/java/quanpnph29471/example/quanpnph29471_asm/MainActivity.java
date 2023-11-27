@@ -7,8 +7,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.DatePicker;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -81,4 +83,12 @@ public class MainActivity extends AppCompatActivity {
                 .addToBackStack(null)  // Nếu bạn muốn thêm vào Back Stack để có thể quay lại FragmentA
                 .commit();
     }
+
+    public void switchFragQL() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container_01, new FragmentQLCongViec())
+                .addToBackStack(null)  // Nếu bạn muốn thêm vào Back Stack để có thể quay lại FragmentA
+                .commit();
+    }
+
 }

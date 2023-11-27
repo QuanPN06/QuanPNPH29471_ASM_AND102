@@ -28,6 +28,7 @@ import quanpnph29471.example.quanpnph29471_asm.DAO.TaskDAO;
 import quanpnph29471.example.quanpnph29471_asm.LoginActivity;
 import quanpnph29471.example.quanpnph29471_asm.MainActivity;
 import quanpnph29471.example.quanpnph29471_asm.Model.Task;
+import quanpnph29471.example.quanpnph29471_asm.MyDatePicker;
 import quanpnph29471.example.quanpnph29471_asm.R;
 import quanpnph29471.example.quanpnph29471_asm.RegisterActivity;
 
@@ -62,14 +63,24 @@ public class FragmentThem extends Fragment {
         imgStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDialogStart();
+                MyDatePicker.showDatePicker(getContext(), new MyDatePicker.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        tvStart.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year) ;
+                    }
+                });
             }
         });
 
         imgEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDialogEnd();
+                MyDatePicker.showDatePicker(getContext(), new MyDatePicker.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        tvEnd.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year) ;
+                    }
+                });
             }
         });
 
@@ -93,26 +104,12 @@ public class FragmentThem extends Fragment {
                 }
             }
         });
-    }
-
-    private void openDialogEnd() {
-        DatePickerDialog dialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+        btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                tvEnd.setText(String.valueOf(day)+"/"+String.valueOf(month)+"/"+String.valueOf(year));
+            public void onClick(View view) {
+                ((MainActivity) getActivity()).switchFragQL();
             }
-        }, 2023, 11, 23);
-        dialog.show();
-    }
-
-    private void openDialogStart() {
-        DatePickerDialog dialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                 tvStart.setText(String.valueOf(day)+"/"+String.valueOf(month)+"/"+String.valueOf(year));
-            }
-        }, 2023, 11, 23);
-        dialog.show();
+        });
     }
 
 }
