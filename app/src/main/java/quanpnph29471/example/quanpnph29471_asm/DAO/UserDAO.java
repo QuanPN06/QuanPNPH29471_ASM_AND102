@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 
 import quanpnph29471.example.quanpnph29471_asm.Database.MyDbhelper;
+import quanpnph29471.example.quanpnph29471_asm.Model.Task;
 import quanpnph29471.example.quanpnph29471_asm.Model.User;
 
 public class UserDAO {
@@ -18,8 +19,6 @@ public class UserDAO {
         dbHelper = new MyDbhelper(context);
         db = dbHelper.getWritableDatabase();
     }
-
-
     public ArrayList<User> getList (){
         String sql ="SELECT * FROM tb_user";
         return getData(sql);
@@ -69,6 +68,23 @@ public class UserDAO {
     public int checkLogin(String name, String password) {
         String sql = "SELECT * FROM tb_user WHERE username=? AND password=?";
         ArrayList<User> list = getData(sql, name, password);
+        if (list.size() == 0) {
+            return -1;
+        }
+        return 1;
+    }
+
+    public User getUserToChangePass (String username,String email){
+//        String sql ="SELECT * FROM tb_user WHERE username WHERE name LIKE '%"+ username +"%' AND email LIKE '%" + email +"%' ";
+//        ArrayList<User> list = getData(sql, username, email);
+        String sql = "SELECT * FROM tb_user WHERE username=? AND email=?";
+        ArrayList<User> list = getData(sql, username, email);
+        return list.get(0);
+    }
+
+    public int checkChangePass(String name, String email) {
+        String sql = "SELECT * FROM tb_user WHERE username=? AND email=?";
+        ArrayList<User> list = getData(sql, name, email);
         if (list.size() == 0) {
             return -1;
         }

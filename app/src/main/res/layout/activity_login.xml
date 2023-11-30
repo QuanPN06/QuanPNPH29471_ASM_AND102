@@ -155,6 +155,7 @@
             android:textSize="17dp"
             android:text="Register"
             android:textStyle="bold"
+
             android:textColor="@color/orange"
             android:layout_marginHorizontal="10dp"/>
 

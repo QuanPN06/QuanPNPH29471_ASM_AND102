@@ -3,7 +3,12 @@ package quanpnph29471.example.quanpnph29471_asm;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.widget.DatePicker;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class MyDatePicker {
 
@@ -31,5 +36,55 @@ public class MyDatePicker {
     public interface OnDateSetListener {
         void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth);
     }
+
+    // Lớp để so sánh hai ngày
+
+    public static boolean isDate1BeforeDate2(String date1, String date2) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date parsedDate1 = sdf.parse(date1);
+            Date parsedDate2 = sdf.parse(date2);
+
+            return parsedDate1.before(parsedDate2)||parsedDate1.equals(parsedDate2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false; // Trả về false nếu có lỗi xử lý ngày tháng
+        }
+    }
+    public static int getStatusByDate(String current,String start, String end) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            if(isDate1BeforeDate2(current,start)){
+                return 0;
+            }else if(isDate1BeforeDate2(start,current)&&isDate1BeforeDate2(current,end)){
+                return 1;
+            }else if(isDate1BeforeDate2(end,current)){
+                return 2;
+            }else return -1;
+
+//            if(isDate1BeforeDate2(end,current)){
+//                return 2;
+//            } else if (isDate1BeforeDate2(start,current)&&isDate1BeforeDate2(current,end)) {
+//                return 1;
+//            }else return 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 10;
+        }
+    }
+
+    public String getCurrentDate() {
+        // Lấy thời gian hiện tại
+        Date currentDate = new Date();
+
+        // Định dạng thời gian theo "dd/MM/yyyy"
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
+        // Chuyển đổi thời gian thành chuỗi theo định dạng
+        return dateFormat.format(currentDate);
+    }
 }
+
+
 

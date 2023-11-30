@@ -75,7 +75,7 @@ public class TaskDAO {
     }
 
     public ArrayList<Task> getListCancel(){
-        String sql = "SELECT * FROM tb_task WHERE status LIKE -1";
+        String sql = "SELECT * FROM tb_task WHERE status LIKE -1 ORDER BY start ASC";
         return getData(sql);
     }
 
@@ -83,4 +83,27 @@ public class TaskDAO {
         String sql = "SELECT * FROM tb_task WHERE name LIKE '%"+ name +"%' AND status LIKE -1";
         return getData(sql);
     }
+
+    public ArrayList<Task> getListCreate(){
+        String sql = "SELECT * FROM tb_task WHERE status LIKE 0 ORDER BY start ASC";
+        return getData(sql);
+    }
+
+    public ArrayList<Task> getListDoing(){
+        String sql = "SELECT * FROM tb_task WHERE status LIKE 1 ORDER BY start ASC";
+        return getData(sql);
+    }
+
+    public ArrayList<Task> getListCompleted(){
+        String sql = "SELECT * FROM tb_task WHERE status LIKE 2 ORDER BY start ASC";
+        return getData(sql);
+    }
+
+//    public ArrayList<Task> getListByIdUser(){
+//        String sql = "SELECT tb_task.*, tb_user.username FROM tb_task INNER JOIN tb_user ON tb_task.id_user = tb_user.id";
+//        return getData(sql);
+//    }
+
+
+
 }

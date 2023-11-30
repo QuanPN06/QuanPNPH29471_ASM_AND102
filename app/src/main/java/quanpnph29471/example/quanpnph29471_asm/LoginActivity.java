@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +20,7 @@ import quanpnph29471.example.quanpnph29471_asm.Model.User;
 
 public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
-    TextView tv_register;
+    TextView tv_register,tv_forgot;
 
     TextInputLayout ed_username,ed_pass;
 
@@ -34,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin = findViewById(R.id.btnLogin);
         tv_register = findViewById(R.id.tv_register);
+        tv_forgot = findViewById(R.id.tv_forgot);
         ed_username = findViewById(R.id.ed_username);
         ed_pass = findViewById(R.id.ed_password);
 
@@ -46,6 +48,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        tv_forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this,ForgotPassActivity.class));
+            }
+        });
+        tv_register.setPaintFlags( Paint.UNDERLINE_TEXT_FLAG);
 
         tv_register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +70,10 @@ public class LoginActivity extends AppCompatActivity {
         String username = sharedPreferences.getString("USERNAME", "");
         String password = sharedPreferences.getString("PASSWORD", "");
 
-        if (!username.isEmpty() && !password.isEmpty()) {
+        if (username.isEmpty() && password.isEmpty()) {
+            Intent i =new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(i);
+        } else {
             ed_username.getEditText().setText(username);
             ed_pass.getEditText().setText(password);
         }

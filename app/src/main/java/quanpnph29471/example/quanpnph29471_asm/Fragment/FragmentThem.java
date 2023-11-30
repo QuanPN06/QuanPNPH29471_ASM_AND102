@@ -33,10 +33,10 @@ import quanpnph29471.example.quanpnph29471_asm.R;
 import quanpnph29471.example.quanpnph29471_asm.RegisterActivity;
 
 public class FragmentThem extends Fragment {
-    TextInputLayout ed_name,ed_content;
+    TextInputLayout ed_name, ed_content;
     ImageView imgStart, imgEnd;
     TextView tvStart, tvEnd;
-    Button btnCancel,btnAdd;
+    Button btnCancel, btnAdd;
 
     TaskDAO taskDAO;
     Task task;
@@ -44,14 +44,14 @@ public class FragmentThem extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_them_cv,container,false);
+        return inflater.inflate(R.layout.fragment_them_cv, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ed_name =view.findViewById(R.id.ed_add_name);
+        ed_name = view.findViewById(R.id.ed_add_name);
         ed_content = view.findViewById(R.id.ed_add_content);
         imgStart = view.findViewById(R.id.img_add_start);
         imgEnd = view.findViewById(R.id.img_add_end);
@@ -66,7 +66,7 @@ public class FragmentThem extends Fragment {
                 MyDatePicker.showDatePicker(getContext(), new MyDatePicker.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        tvStart.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year) ;
+                        tvStart.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                     }
                 });
             }
@@ -78,7 +78,7 @@ public class FragmentThem extends Fragment {
                 MyDatePicker.showDatePicker(getContext(), new MyDatePicker.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        tvEnd.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year) ;
+                        tvEnd.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                     }
                 });
             }
@@ -88,26 +88,30 @@ public class FragmentThem extends Fragment {
             @Override
             public void onClick(View view) {
                 taskDAO = new TaskDAO(getContext());
-                task = new Task(
-                        0,
-                        ed_name.getEditText().getText().toString(),
-                        ed_content.getEditText().getText().toString(),
-                        tvStart.getText().toString(),
-                        tvEnd.getText().toString()
-                        );
-                long check = taskDAO.insert(task);
-                if(check>0){
-                    Toast.makeText(getContext(), "Thêm hoạt động thành công", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getContext(), MainActivity.class));
-                }else {
-                    Toast.makeText(getContext(), "Thêm thất bại", Toast.LENGTH_SHORT).show();
+                if (MyDatePicker.isDate1BeforeDate2(tvStart.getText().toString(), tvEnd.getText().toString())) {
+                    task = new Task(
+                            0,
+                            ed_name.getEditText().getText().toString(),
+                            ed_content.getEditText().getText().toString(),
+                            tvStart.getText().toString(),
+                            tvEnd.getText().toString()
+                    );
+                    long check = taskDAO.insert(task);
+                    if (check > 0) {
+                        Toast.makeText(getContext(), "Thêm hoạt động thành công", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getContext(), MainActivity.class));
+                    } else {
+                        Toast.makeText(getContext(), "Thêm thất bại", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Ngày bắt đầu phải trước Ngày kết thúc", Toast.LENGTH_SHORT).show();
                 }
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) getActivity()).switchFragQL();
+                ((MainActivity) getActivity()).switchFrag(new FragmentQLCongViec());
             }
         });
     }

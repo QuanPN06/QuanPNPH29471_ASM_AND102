@@ -3,6 +3,7 @@ package quanpnph29471.example.quanpnph29471_asm;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -50,13 +51,21 @@ public class RegisterActivity extends AppCompatActivity {
                     if(check>0){
                         Toast.makeText(RegisterActivity.this, "Chúc mừng bạn đã đăng ký thành công", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+
+                        rememberUser(username,pass);
                     }else {
                         Toast.makeText(RegisterActivity.this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
+    }
 
-
+    public void rememberUser(String u, String p) {
+        SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        SharedPreferences.Editor edit = pref.edit();
+        edit.putString("USERNAME", u);
+        edit.putString("PASSWORD", p);
+        edit.commit();
     }
 }

@@ -11,11 +11,14 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.DatePicker;
+import android.widget.FrameLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
+import quanpnph29471.example.quanpnph29471_asm.Fragment.FragCollectionThongKe;
 import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentGioiThieu;
 import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentHuy;
+import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentLogout;
 import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentQLCongViec;
 import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentThem;
 
@@ -67,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
                 }else if(item.getItemId() ==R.id.task_canceled){
                     toolbar.setTitle("Công việc bị hủy");
                     fragment = new FragmentHuy();
+                }else if(item.getItemId() ==R.id.logout){
+                    toolbar.setTitle("Đăng xuất");
+                    fragment = new FragmentLogout();
+                }else if(item.getItemId() ==R.id.thong_ke){
+                    toolbar.setTitle("Thống kê");
+                    fragment = new FragCollectionThongKe();
                 }
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -77,16 +86,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    public void switchFragThem() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container_01, new FragmentThem())
-                .addToBackStack(null)  // Nếu bạn muốn thêm vào Back Stack để có thể quay lại FragmentA
-                .commit();
-    }
 
-    public void switchFragQL() {
+    public void switchFrag(Fragment fm) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container_01, new FragmentQLCongViec())
+                .replace(R.id.fragment_container_01, fm)
                 .addToBackStack(null)  // Nếu bạn muốn thêm vào Back Stack để có thể quay lại FragmentA
                 .commit();
     }

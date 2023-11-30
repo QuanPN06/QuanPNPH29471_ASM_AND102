@@ -19,6 +19,7 @@ import quanpnph29471.example.quanpnph29471_asm.ClickDelItem;
 import quanpnph29471.example.quanpnph29471_asm.ClickUpdateItem;
 import quanpnph29471.example.quanpnph29471_asm.DAO.TaskDAO;
 import quanpnph29471.example.quanpnph29471_asm.Model.Task;
+import quanpnph29471.example.quanpnph29471_asm.MyDatePicker;
 import quanpnph29471.example.quanpnph29471_asm.R;
 
 public class TaskCancelAdapter extends RecyclerView.Adapter<TaskCancelAdapter.TaskViewHolder>{
@@ -99,8 +100,16 @@ public class TaskCancelAdapter extends RecyclerView.Adapter<TaskCancelAdapter.Ta
         builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                MyDatePicker dateController = new MyDatePicker();
+                String startDate = obj.getStart();
+                String endDate = obj.getEnd();
+                String current =  dateController.getCurrentDate();
+
+                int status = MyDatePicker.getStatusByDate(current,startDate,endDate);
+                obj.setStatus(status);
+
                 TaskDAO dao1 = new TaskDAO(context);
-                obj.setStatus(1);
+
                 long check = dao1.update(obj);
                 if (check > 0) {
                     list.clear();

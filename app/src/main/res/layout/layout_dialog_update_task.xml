@@ -48,12 +48,12 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:text="Trạng thái "
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="17dp"/>
+            android:text="Trạng thái: "
+            android:textSize="17dp" />
 
-        <androidx.appcompat.widget.AppCompatSpinner
+        <Spinner
             android:id="@+id/spinner_update"
             android:layout_width="0dp"
             android:layout_weight="1"

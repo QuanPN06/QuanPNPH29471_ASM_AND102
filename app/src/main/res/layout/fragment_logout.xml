@@ -1,56 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
     android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp">
 
-   >
-    
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@drawable/border_item"
-        android:padding="20dp"
-
-        >
-        
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bạn muốn đăng xuất ?"
-            android:textSize="25dp"/>
+        android:padding="5dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginVertical="10dp"
-            android:gravity="center">
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_add_cancel"
-                android:layout_width="150dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hủy"
-                android:textColor="@color/orange"
-                android:backgroundTint="@color/background"
-                app:strokeColor="@color/orange"
-                app:strokeWidth="5px"
-                android:layout_margin="10dp"
-                />
-            <Button
-                android:id="@+id/btn_add_add"
-                android:layout_width="150dp"
+                android:text="Bạn muốn đăng xuất ?"
+                android:textSize="25dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Đăng xuất"
-                android:backgroundTint="@color/orange"
-                android:layout_margin="10dp"
-                />
+                android:layout_marginVertical="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_logout_huy"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:backgroundTint="@color/background"
+                    android:text="Hủy"
+                    android:textColor="@color/orange"
+                    app:strokeColor="@color/orange"
+                    app:strokeWidth="5px" />
+
+                <Button
+                    android:id="@+id/btn_logout"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:backgroundTint="@color/orange"
+                    android:text="Đăng xuất" />
+            </LinearLayout>
+
         </LinearLayout>
-        
     </LinearLayout>
 
 </LinearLayout>

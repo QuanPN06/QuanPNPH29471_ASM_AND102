@@ -56,7 +56,7 @@ public class FragmentQLCongViec extends Fragment {
         float_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) getActivity()).switchFragThem();
+                ((MainActivity) getActivity()).switchFrag(new FragmentThem());
             }
         });
 
@@ -83,8 +83,6 @@ public class FragmentQLCongViec extends Fragment {
         taskAdapter = new TaskAdapter(list,getContext());
         rc.setAdapter(taskAdapter);
     }
-
-
 
 }
 

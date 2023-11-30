@@ -6,9 +6,12 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import quanpnph29471.example.quanpnph29471_asm.ClickDelItem;
 
@@ -112,6 +116,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         TextView tv_end = v.findViewById(R.id.tv_update_end);
         ImageView img_start = v.findViewById(R.id.img_update_start);
         ImageView img_end = v.findViewById(R.id.img_update_end);
+        Spinner spinner = v.findViewById(R.id.spinner_update);
 
         ed_content.getEditText().setText(obj.getContent());
         ed_name.getEditText().setText(obj.getName());
@@ -120,6 +125,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
         Button btnUpdate = v.findViewById(R.id.btn_update);
         Button btn_cancel = v.findViewById(R.id.btn_update_cancel);
+
 
         img_start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,22 +154,34 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                obj.setName(ed_name.getEditText().getText().toString());
-                obj.setContent(ed_content.getEditText().getText().toString());
-                obj.setStart(tv_start.getText().toString());
-                obj.setEnd(tv_end.getText().toString());
+                String startDate = tv_start.getText().toString();
+                String endDate = tv_end.getText().toString();
+                String current = new MyDatePicker().getCurrentDate();
 
-                TaskDAO dao1 = new TaskDAO(context);
-                int check = dao1.update(obj);
-                if (check > 0) {
-                    list.clear();
-                    list.addAll(dao1.getList());
-                    notifyDataSetChanged();
-                    Toast.makeText(context, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                } else {
-                    Toast.makeText(context, "Lỗi cập nhật", Toast.LENGTH_SHORT).show();
+                if(MyDatePicker.isDate1BeforeDate2(startDate,endDate)){
+                    int status = MyDatePicker.getStatusByDate(current,startDate,endDate);
+
+                    obj.setName(ed_name.getEditText().getText().toString());
+                    obj.setContent(ed_content.getEditText().getText().toString());
+                    obj.setStart(startDate);
+                    obj.setEnd(endDate);
+                    obj.setStatus(status);
+
+                    TaskDAO dao1 = new TaskDAO(context);
+                    int check = dao1.update(obj);
+                    if (check > 0) {
+                        list.clear();
+                        list.addAll(dao1.getList());
+                        notifyDataSetChanged();
+                        Toast.makeText(context, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(context, "Lỗi cập nhật", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(context, "Ngày bắt đầu phải trước Ngày kết thúc", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -209,4 +227,5 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         AlertDialog alertDialogdialog = builder.create();
         alertDialogdialog.show();
     }
+
 }
