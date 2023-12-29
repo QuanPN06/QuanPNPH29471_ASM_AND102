@@ -2,7 +2,9 @@ package quanpnph29471.example.quanpnph29471_asm;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.util.Log;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,7 +42,7 @@ public class MyDatePicker {
     // Lớp để so sánh hai ngày
 
     public static boolean isDate1BeforeDate2(String date1, String date2) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         try {
             Date parsedDate1 = sdf.parse(date1);
             Date parsedDate2 = sdf.parse(date2);
@@ -52,7 +54,6 @@ public class MyDatePicker {
         }
     }
     public static int getStatusByDate(String current,String start, String end) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
             if(isDate1BeforeDate2(current,start)){
                 return 0;
@@ -61,12 +62,6 @@ public class MyDatePicker {
             }else if(isDate1BeforeDate2(end,current)){
                 return 2;
             }else return -1;
-
-//            if(isDate1BeforeDate2(end,current)){
-//                return 2;
-//            } else if (isDate1BeforeDate2(start,current)&&isDate1BeforeDate2(current,end)) {
-//                return 1;
-//            }else return 0;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,8 +73,8 @@ public class MyDatePicker {
         // Lấy thời gian hiện tại
         Date currentDate = new Date();
 
-        // Định dạng thời gian theo "dd/MM/yyyy"
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        // Định dạng thời gian theo "yyyy/MM/dd"
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
 
         // Chuyển đổi thời gian thành chuỗi theo định dạng
         return dateFormat.format(currentDate);

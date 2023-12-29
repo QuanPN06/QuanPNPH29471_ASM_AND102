@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <!-- Màu nền của View -->
-    <solid android:color="@android:color/darker_gray" />
+    <solid android:color="#E8E8E8" />
 
     <!-- Đường viền -->
     <stroke

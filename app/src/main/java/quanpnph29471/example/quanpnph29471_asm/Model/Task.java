@@ -1,7 +1,7 @@
 package quanpnph29471.example.quanpnph29471_asm.Model;
 
 public class Task {
-    int id,status;
+    int id,id_user,status;
     String name,content,start,end;
 
     public Task() {
@@ -13,6 +13,14 @@ public class Task {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getId_user() {
+        return id_user;
+    }
+
+    public void setId_user(int id_user) {
+        this.id_user = id_user;
     }
 
     public int getStatus() {
@@ -55,8 +63,9 @@ public class Task {
         this.end = end;
     }
 
-    public Task(int id, int status, String name, String content, String start, String end) {
+    public Task(int id, int id_user, int status, String name, String content, String start, String end) {
         this.id = id;
+        this.id_user = id_user;
         this.status = status;
         this.name = name;
         this.content = content;
@@ -64,7 +73,8 @@ public class Task {
         this.end = end;
     }
 
-    public Task(int status, String name, String content, String start, String end) {
+    public Task(int id_user, int status, String name, String content, String start, String end) {
+        this.id_user = id_user;
         this.status = status;
         this.name = name;
         this.content = content;

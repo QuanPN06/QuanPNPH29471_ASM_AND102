@@ -1,13 +1,24 @@
 package quanpnph29471.example.quanpnph29471_asm.Adapter;
 
-import android.app.DatePickerDialog;
+
+
+
+
+import android.Manifest;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -17,32 +28,33 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 
-import quanpnph29471.example.quanpnph29471_asm.ClickDelItem;
-
-import quanpnph29471.example.quanpnph29471_asm.ClickUpdateItem;
 import quanpnph29471.example.quanpnph29471_asm.DAO.TaskDAO;
+import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentQLCongViec;
+import quanpnph29471.example.quanpnph29471_asm.LoginActivity;
+import quanpnph29471.example.quanpnph29471_asm.MainActivity;
 import quanpnph29471.example.quanpnph29471_asm.Model.Task;
 import quanpnph29471.example.quanpnph29471_asm.MyDatePicker;
+import quanpnph29471.example.quanpnph29471_asm.NotifyConfig;
 import quanpnph29471.example.quanpnph29471_asm.R;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder>{
     ArrayList<Task> list;
     Context context;
-    ClickDelItem clickDelItem;
-
-
 
     public TaskAdapter(ArrayList<Task> list,  Context context) {
         this.list = list;
-        this.clickDelItem = clickDelItem;
+
         this.context=context;
     }
 
@@ -112,16 +124,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
         TextInputLayout ed_name = v.findViewById(R.id.ed_update_name);
         TextInputLayout ed_content = v.findViewById(R.id.ed_update_content);
-        TextView tv_start = v.findViewById(R.id.tv_update_start);
-        TextView tv_end = v.findViewById(R.id.tv_update_end);
+        TextView tvStart = v.findViewById(R.id.tv_update_start);
+        TextView tvEnd = v.findViewById(R.id.tv_update_end);
         ImageView img_start = v.findViewById(R.id.img_update_start);
         ImageView img_end = v.findViewById(R.id.img_update_end);
-        Spinner spinner = v.findViewById(R.id.spinner_update);
 
         ed_content.getEditText().setText(obj.getContent());
         ed_name.getEditText().setText(obj.getName());
-        tv_end.setText(obj.getEnd());
-        tv_start.setText(obj.getStart());
+        tvEnd.setText(obj.getEnd());
+        tvStart.setText(obj.getStart());
 
         Button btnUpdate = v.findViewById(R.id.btn_update);
         Button btn_cancel = v.findViewById(R.id.btn_update_cancel);
@@ -133,7 +144,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 MyDatePicker.showDatePicker(context, new MyDatePicker.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        tv_start.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year) ;
+                        String month = monthOfYear < 9 ? "0"+(monthOfYear+1):(monthOfYear+1)+"";
+                        String day = dayOfMonth < 10 ? ("0"+dayOfMonth):(dayOfMonth+"");
+
+                        tvStart.setText(year + "/" + month + "/" +day);
                     }
                 });
             }
@@ -145,7 +159,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 MyDatePicker.showDatePicker(context, new MyDatePicker.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        tv_end.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year) ;
+                        String month = monthOfYear < 9 ? "0"+(monthOfYear+1):(monthOfYear+1)+"";
+                        String day = dayOfMonth < 10 ? ("0"+dayOfMonth):(dayOfMonth+"");
+
+                        tvEnd.setText(year + "/" + month + "/" +day);
                     }
                 });
 
@@ -154,8 +171,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String startDate = tv_start.getText().toString();
-                String endDate = tv_end.getText().toString();
+                String startDate = tvStart.getText().toString();
+                String endDate = tvEnd.getText().toString();
                 String current = new MyDatePicker().getCurrentDate();
 
                 if(MyDatePicker.isDate1BeforeDate2(startDate,endDate)){
@@ -213,6 +230,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     notifyDataSetChanged();
                     Toast.makeText(context, "Đã chuyển vào thùng rác ", Toast.LENGTH_SHORT).show();
                     dialogInterface.dismiss();
+                    sendNoti("Đã chuyển \""+ obj.getName() +"\"vào thùng rác");
                 } else {
                     Toast.makeText(context, "Lỗi xoa", Toast.LENGTH_SHORT).show();
                 }
@@ -226,6 +244,48 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         });
         AlertDialog alertDialogdialog = builder.create();
         alertDialogdialog.show();
+    }
+
+    void sendNoti(String title){
+        //Khai bao intent de nhan tuong tac khi bam vao notify
+        Intent intentDemo = new Intent(context, MainActivity.class);
+
+        //gan co de intent hoat dong pham vi cao nhat
+        intentDemo.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntentWithParentStack(intentDemo);
+
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        Bitmap anh = BitmapFactory.decodeResource(context.getResources(), R.drawable.trash);
+
+        Notification customNotification = new NotificationCompat.Builder(
+                context, NotifyConfig.CHANNEL_ID)
+                .setSmallIcon(android.R.drawable.ic_dialog_alert)
+                .setContentTitle(title)
+                .setContentIntent(resultPendingIntent)
+                .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(anh).bigLargeIcon(null))
+                .setLargeIcon(anh)
+                .setColor(Color.RED)
+                .setAutoCancel(true)
+                .build();
+
+        NotificationManagerCompat notificationManagerCompat
+                =NotificationManagerCompat.from(context);
+
+        if(ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.POST_NOTIFICATIONS);
+            return;
+        }
+
+        int id_notify = (int) new Date().getTime();
+
+        notificationManagerCompat.notify(id_notify,customNotification);
     }
 
 }

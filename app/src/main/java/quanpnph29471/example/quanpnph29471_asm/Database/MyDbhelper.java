@@ -28,6 +28,7 @@ public class MyDbhelper extends SQLiteOpenHelper {
     public static final String TABLE_TASK_CREATE ="CREATE TABLE " +
             "tb_task (" +
             "    id      INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "    id_user INTEGER REFERENCES tb_user (id),"+
             "    name    TEXT    NOT NULL" +
             "                    UNIQUE," +
             "    content TEXT    NOT NULL," +
@@ -35,14 +36,14 @@ public class MyDbhelper extends SQLiteOpenHelper {
             "    start   TEXT    NOT NULL," +
             "    end_date     TEXT    NOT NULL " +
             ")";
-    public static final String insert_task = "INSERT INTO tb_task (name,content,status,start,end_date) VALUES " +
-            "('Da bong','ngay mai da bong nhe','0','22/11/2023','24/11/2023'), " +
-            "('Hoc tiep','Hoc , hoc nua , hoc mai','0','22/11/2023','24/11/2023') " ;
+//    public static final String insert_task = "INSERT INTO tb_task (id_user,name,content,status,start,end_date) VALUES " +
+//            "('Da bong','ngay mai da bong nhe','0','22/11/2023','24/11/2023'), " +
+//            "('Hoc tiep','Hoc , hoc nua , hoc mai','0','22/11/2023','24/11/2023') " ;
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(TABLE_USER_CREATE);
         db.execSQL(TABLE_TASK_CREATE);
-        db.execSQL(insert_task);
+//        db.execSQL(insert_task);
     }
 
     @Override

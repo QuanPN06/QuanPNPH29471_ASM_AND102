@@ -1,7 +1,5 @@
 package quanpnph29471.example.quanpnph29471_asm.Fragment;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +15,11 @@ import java.util.ArrayList;
 
 import quanpnph29471.example.quanpnph29471_asm.Adapter.TaskAdapter;
 import quanpnph29471.example.quanpnph29471_asm.DAO.TaskDAO;
-import quanpnph29471.example.quanpnph29471_asm.DAO.UserDAO;
 import quanpnph29471.example.quanpnph29471_asm.Model.Task;
-import quanpnph29471.example.quanpnph29471_asm.Model.User;
+import quanpnph29471.example.quanpnph29471_asm.MyDatePicker;
 import quanpnph29471.example.quanpnph29471_asm.R;
 
-public class FragThongKe_MoiTao extends Fragment {
+public class FragThongKe_TodayTask extends Fragment {
 
 
 
@@ -36,23 +33,19 @@ public class FragThongKe_MoiTao extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("USER_FILE", Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString("USERNAME", "");
-
         RecyclerView rc;
         TaskAdapter taskAdapter;
         TaskDAO taskDAO;
-        UserDAO userDao = new UserDAO(getContext());
         ArrayList<Task> list = new ArrayList<>();
         TextView tv_title;
-
+        String current = new MyDatePicker().getCurrentDate();
 
         rc = view.findViewById(R.id.rc_thongke);
         tv_title = view.findViewById(R.id.tv_title);
-        tv_title.setText("MỚI TẠO");
+        tv_title.setText("Công việc hôm nay");
 
         taskDAO = new TaskDAO(getContext());
-        list = taskDAO.getListCreate(userDao.getUserId(username).getId());
+        list = taskDAO.getTasksForDay(current);
 
         taskAdapter = new TaskAdapter(list,getContext());
         rc.setAdapter(taskAdapter);

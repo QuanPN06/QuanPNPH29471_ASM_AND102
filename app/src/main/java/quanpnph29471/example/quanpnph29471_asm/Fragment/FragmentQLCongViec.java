@@ -1,12 +1,16 @@
 package quanpnph29471.example.quanpnph29471_asm.Fragment;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -47,6 +51,9 @@ public class FragmentQLCongViec extends Fragment {
         float_btn = view.findViewById(R.id.floating_button);
         ed_search = view.findViewById(R.id.ed_fragment_ql_search);
         btn_search = view.findViewById(R.id.btn_fragment_ql_tapSearch);
+
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("USER_FILE", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("USERNAME", "");
 
         taskDAO = new TaskDAO(getContext());
         list = taskDAO.getList();

@@ -49,14 +49,18 @@ public class FragCollectionThongKe extends Fragment {
 
                 switch (position){
                     case 0:
-                        tab.setText("MỚI TẠO");
+                        tab.setText("HÔM NAY");
                         break;
                     case 1:
-                        tab.setText("ĐANG LÀM");
+                        tab.setText("MỚI TẠO");
                         break;
                     case 2:
+                        tab.setText("ĐANG LÀM");
+                        break;
+                    case 3:
                         tab.setText("HOÀN THÀNH");
                         break;
+
                 }
             }
         }).attach();

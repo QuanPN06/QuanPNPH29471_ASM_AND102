@@ -90,4 +90,9 @@ public class UserDAO {
         }
         return 1;
     }
+
+    public User getUserId(String username) {
+        String sql = "SELECT * FROM tb_user  where username=?";
+        return getData(sql,username).get(0);
+    }
 }

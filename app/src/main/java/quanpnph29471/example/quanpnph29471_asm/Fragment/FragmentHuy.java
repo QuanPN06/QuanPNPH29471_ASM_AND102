@@ -1,34 +1,26 @@
 package quanpnph29471.example.quanpnph29471_asm.Fragment;
 
-import android.content.DialogInterface;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
 
-import quanpnph29471.example.quanpnph29471_asm.Adapter.TaskAdapter;
 import quanpnph29471.example.quanpnph29471_asm.Adapter.TaskCancelAdapter;
-import quanpnph29471.example.quanpnph29471_asm.ClickDelItem;
-import quanpnph29471.example.quanpnph29471_asm.ClickUpdateItem;
 import quanpnph29471.example.quanpnph29471_asm.DAO.TaskDAO;
-import quanpnph29471.example.quanpnph29471_asm.MainActivity;
+import quanpnph29471.example.quanpnph29471_asm.DAO.UserDAO;
 import quanpnph29471.example.quanpnph29471_asm.Model.Task;
 import quanpnph29471.example.quanpnph29471_asm.R;
 
@@ -50,6 +42,9 @@ public class FragmentHuy extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("USER_FILE", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("USERNAME", "");
+
         rc = view.findViewById(R.id.recycler_view);
         ed_search = view.findViewById(R.id.ed_fragment_ql_search);
         btn_search = view.findViewById(R.id.btn_fragment_ql_tapSearch);
@@ -61,10 +56,12 @@ public class FragmentHuy extends Fragment {
 
         rc.setAdapter(taskAdapter);
 
+
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ed_search.length() > 0) {
+                    UserDAO userDAO = new UserDAO(getContext());
                     String searchName = ed_search.getText().toString();
                     LinearLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), 1);
                     rc.setLayoutManager(linearLayoutManager);
@@ -82,7 +79,6 @@ public class FragmentHuy extends Fragment {
             }
         });
     }
-
 
 }
 

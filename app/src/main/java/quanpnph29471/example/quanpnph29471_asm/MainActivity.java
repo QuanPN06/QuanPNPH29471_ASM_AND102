@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
@@ -20,6 +21,7 @@ import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentGioiThieu;
 import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentHuy;
 import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentLogout;
 import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentQLCongViec;
+import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentSearch;
 import quanpnph29471.example.quanpnph29471_asm.Fragment.FragmentThem;
 
 public class MainActivity extends AppCompatActivity {
@@ -76,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
                 }else if(item.getItemId() ==R.id.thong_ke){
                     toolbar.setTitle("Thống kê");
                     fragment = new FragCollectionThongKe();
+                }else if(item.getItemId() ==R.id.search){
+                    toolbar.setTitle("Thống kê");
+                    fragment = new FragmentSearch();
                 }
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -93,5 +98,6 @@ public class MainActivity extends AppCompatActivity {
                 .addToBackStack(null)  // Nếu bạn muốn thêm vào Back Stack để có thể quay lại FragmentA
                 .commit();
     }
+
 
 }

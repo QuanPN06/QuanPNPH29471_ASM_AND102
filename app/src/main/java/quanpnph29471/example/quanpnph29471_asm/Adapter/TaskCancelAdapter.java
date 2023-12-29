@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import quanpnph29471.example.quanpnph29471_asm.ClickDelItem;
-import quanpnph29471.example.quanpnph29471_asm.ClickUpdateItem;
 import quanpnph29471.example.quanpnph29471_asm.DAO.TaskDAO;
 import quanpnph29471.example.quanpnph29471_asm.Model.Task;
 import quanpnph29471.example.quanpnph29471_asm.MyDatePicker;
